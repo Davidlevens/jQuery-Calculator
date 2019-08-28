@@ -101,19 +101,29 @@
 
 
       function clearEntry() {
-        if (isCalculated === false) {
+        // if everything is calculated
+        if (isCalculated === true) {
+          initializeCalculator();
+
+
+          // else if second number exists
+        } else if (secondNumber) {
+          secondNumber = "";
           $("#second-number").empty();
-        }
 
-        if (secondNumber === "") {
+          // else if operator exists
+        } else if (operator) {
+          operator = "";
+          isOperatorChosen = false;
           $("#operator").empty();
+          //  else first number exists
+        } else {
+          firstNumber = "";
+          $("#first-number").empty();
         }
-
-
       };
+    
 
-
-        
     $('.number').on('click', function () {
 
       if (isCalculated) {
