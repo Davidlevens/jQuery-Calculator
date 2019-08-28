@@ -21,7 +21,8 @@
   <!-- Jumbotron for Title -->
   <div class="jumbotron">
     <h1 class="text-center">jQuery Calculator</h1>
-    <h3 class="text-center">Perform basic mathematic operations using the power of jQuery!</h3>
+    <h3 class="text-center">Perform basic mathematic operations and select all buttons to add CSS style using the power
+      of jQuery!</h3>
   </div>
 
   <div class="container">
@@ -52,11 +53,12 @@
             <button id="button-0" class="btn btn-primary number" value="0"><span>0</span></button>
             <button id="button-divide" class="btn btn-danger operator" value="divide"><span>&divide;</span></button>
             <button id="button-power" class="btn btn-danger operator" value="power"><span>^</span></button>
-            <button id="button-equal" class="btn btn-success equal" value="equals"><span>=</span></button>
+            <button id="button-percent" class="btn btn-danger operator" value="percent"><span>&percnt;</span></button>
             <br><br>
             <button id="button-clear" class="btn btn-dark clear" value="clear"><span>C</span></button>
             <button id="button-clear-entry" class="btn btn-dark clear-entry"
               value="clear-entry"><span>CE</span></button>
+            <button id="button-equal" class="btn btn-success equal" value="equals"><span>=</span></button>
           </div>
         </div>
       </div>
@@ -78,8 +80,11 @@
   </div>
 
   <script type="text/javascript">
+    $("button")
+      .filter(".btn")
+      .css("border-color", "black");
 
-    // Your code here...
+         // Your code here...
     $(document).ready(function () {
 
       let firstNumber = 0;
@@ -122,94 +127,98 @@
           $("#first-number").empty();
         }
       };
-    
 
-    $('.number').on('click', function () {
 
-      if (isCalculated) {
-        return false;
+      $('.number').on('click', function () {
+
+        if (isCalculated) {
+          return false;
+        }
+
+
+        if (isOperatorChosen) {
+          secondNumber += $(this).val();
+          $("#second-number").text(secondNumber);
+        }
+
+        else {
+          firstNumber += $(this).val();
+          $("#first-number").text(firstNumber);
+        }
+
+      });
+      $(".operator").on("click", function () {
+
+        if (!firstNumber || isCalculated) {
+          return false;
+        }
+        isOperatorChosen = true;
+
+        operator = $(this).val();
+
+        $("#operator").text($(this).text());
+
+      });
+
+      $(".equal").on('click', function () {
+
+        if (isCalculated) {
+          return false;
+        }
+
+        isCalculated = true;
+
+        firstNumber = parseInt(firstNumber);
+        secondNumber = parseInt(secondNumber);
+
+        if (operator === "plus") {
+          result = firstNumber + secondNumber;
+        }
+
+        else if (operator === "minus") {
+          result = firstNumber - secondNumber;
+        }
+
+        else if (operator === "times") {
+          result = firstNumber * secondNumber;
+        }
+
+        else if (operator === "divide") {
+          result = firstNumber / secondNumber;
+        }
+
+        else if (operator === "power") {
+          result = Math.pow(firstNumber, secondNumber);
+        }
+
+        else if (operator === "percent") {
+          result = Math.floor(firstNumber / secondNumber * 100) + "%";
+        }
+
+        $("#result").text(result);
+
+      });
+
+      $(".clear").on("click", function () {
+        initializeCalculator();
+
+      });
+      // We can put this clear number in one function
+      $(".clear-entry").on("click", function () {
+        clearEntry();
+
+
+      });
+
+      if (secondNumber = "") {
+        clearOperator();
       }
 
 
-      if (isOperatorChosen) {
-        secondNumber += $(this).val();
-        $("#second-number").text(secondNumber);
-      }
 
-      else {
-        firstNumber += $(this).val();
-        $("#first-number").text(firstNumber);
-      }
 
-    });
-    $(".operator").on("click", function () {
 
-      if (!firstNumber || isCalculated) {
-        return false;
-      }
-      isOperatorChosen = true;
-
-      operator = $(this).val();
-
-      $("#operator").text($(this).text());
-
-    });
-
-    $(".equal").on('click', function () {
-
-      if (isCalculated) {
-        return false;
-      }
-
-      isCalculated = true;
-
-      firstNumber = parseInt(firstNumber);
-      secondNumber = parseInt(secondNumber);
-
-      if (operator === "plus") {
-        result = firstNumber + secondNumber;
-      }
-
-      else if (operator === "minus") {
-        result = firstNumber - secondNumber;
-      }
-
-      else if (operator === "times") {
-        result = firstNumber * secondNumber;
-      }
-
-      else if (operator === "divide") {
-        result = firstNumber / secondNumber;
-      }
-
-      else if (operator === "power") {
-        result = Math.pow(firstNumber, secondNumber);
-      }
-
-      $("#result").text(result);
-
-    });
-
-    $(".clear").on("click", function () {
       initializeCalculator();
-
-    });
-    // We can put this clear number in one function
-    $(".clear-entry").on("click", function () {
-      clearEntry();
-
-
-    });
-
-    if (secondNumber = "") {
-      clearOperator();
-    }
-
-
-
-
-
-    initializeCalculator();
     });
 
 
